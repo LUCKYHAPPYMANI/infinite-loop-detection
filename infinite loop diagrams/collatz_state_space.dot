@@ -1,0 +1,17 @@
+digraph Collatz {
+    rankdir=LR;
+    node [shape=circle, style=filled, fillcolor="#DBEAFE", color="#3B82F6", penwidth=2, fontname="Arial", width=0.8];
+    edge [color="#64748B", penwidth=2, arrowsize=0.8];
+
+    N1 [label="27"];
+    N2 [label="82"];
+    N3 [label="41"];
+    N4 [label="124"];
+    N5 [label="62"];
+    N6 [label="31"];
+    N7 [label="..."];
+    N8 [label="2"];
+    N9 [label="1", shape=doublecircle, fillcolor="#D1FAE5", color="#10B981"];
+
+    N1 -> N2 -> N3 -> N4 -> N5 -> N6 -> N7 -> N8 -> N9;
+}

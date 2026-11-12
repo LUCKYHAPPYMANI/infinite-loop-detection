@@ -1,0 +1,13 @@
+digraph "collatz_sequence" {
+  rankdir=LR;
+  node [shape=circle, style=filled, fillcolor=white, fontname="Helvetica"];
+  "27" [shape=circle];
+  "82" [shape=circle];
+  "41" [shape=circle];
+  "..." [shape=circle];
+  "1" [shape=doublecircle];
+  "27" -> "82";
+  "82" -> "41";
+  "41" -> "...";
+  "..." -> "1";
+}

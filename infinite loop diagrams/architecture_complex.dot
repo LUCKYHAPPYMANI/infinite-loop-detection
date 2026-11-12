@@ -1,0 +1,57 @@
+digraph Architecture {
+    rankdir=TB;
+    fontname="Helvetica,Arial,sans-serif";
+    node [fontname="Helvetica,Arial,sans-serif", shape=plaintext];
+    edge [fontname="Helvetica,Arial,sans-serif", color="#475569", penwidth=1.5];
+
+    Input [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#E0F2FE" color="#38BDF8">
+        <tr><td align="center"><b>INPUT</b><br/>LoopProgram Dataclass</td></tr>
+    </table>>];
+
+    Tier1 [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#FEF3C7" color="#FBBF24">
+        <tr><td align="center"><b>TIER 1</b><br/>Static Ranking Analysis</td></tr>
+    </table>>];
+
+    subgraph cluster_engine {
+        label = "RUNTIME ENGINE (Tiers 2 & 3)";
+        style = "dashed,rounded";
+        color = "#94A3B8";
+        bgcolor = "#F8FAFC";
+        fontcolor = "#475569";
+        fontsize = 14;
+        margin = 20;
+
+        Exec [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#FFFFFF" color="#94A3B8">
+            <tr><td align="center"><b>State Execution</b><br/>step_fn(state)</td></tr>
+        </table>>];
+
+        Tier2 [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#F3E8FF" color="#C084FC">
+            <tr><td align="center"><b>TIER 2</b><br/>Cycle Detection<br/>(Visited Configs)</td></tr>
+        </table>>];
+
+        Tier3 [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#FFE4E6" color="#FB7185">
+            <tr><td align="center"><b>TIER 3</b><br/>Watchdog Monitor<br/>(steps >= K_max)</td></tr>
+        </table>>];
+    }
+
+    Term [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#DCFCE7" color="#4ADE80">
+        <tr><td align="center"><font color="#166534"><b>VERDICT: TERMINATED NORMALLY</b></font></td></tr>
+    </table>>];
+
+    Cycle [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#FEE2E2" color="#EF4444">
+        <tr><td align="center"><font color="#991B1B"><b>INFINITE LOOP CYCLE</b></font></td></tr>
+    </table>>];
+
+    Timeout [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="10" bgcolor="#FEF9C3" color="#FACC15">
+        <tr><td align="center"><font color="#854D0E"><b>WATCHDOG TIMEOUT</b></font></td></tr>
+    </table>>];
+
+    Input -> Tier1;
+    Tier1 -> Exec;
+    Exec -> Tier2;
+    Exec -> Tier3;
+    Tier2 -> Exec [label=" Unique Config ", fontcolor="#10B981", color="#10B981"];
+    Tier2 -> Cycle [label=" Repeat Config ", fontcolor="#EF4444", color="#EF4444"];
+    Tier3 -> Timeout [label=" Exceed K_max ", fontcolor="#F59E0B", color="#F59E0B"];
+    Exec -> Term;
+}

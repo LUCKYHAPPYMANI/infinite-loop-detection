@@ -1,0 +1,15 @@
+digraph Tier2 {
+    rankdir=LR;
+    node [fontname="Arial", shape=box, style="rounded,filled"];
+    edge [fontname="Arial", penwidth=2];
+
+    Memory [shape=record, fillcolor="#F1F5F9", color="#94A3B8", label="{Visited Set|hash(x:1)|hash(x:3)|...}"];
+    
+    S1 [label="State: {x: 1}", fillcolor="#FEF3C7", color="#FBBF24"];
+    S2 [label="Next: {x: 3}", fillcolor="#E0F2FE", color="#38BDF8"];
+    S3 [label="Next: {x: 1}", fillcolor="#FEE2E2", color="#EF4444"];
+
+    S1 -> S2 -> S3 [color="#475569"];
+    S1 -> Memory [label="Add", color="#10B981", fontcolor="#10B981", style=dashed];
+    S3 -> Memory [label="Collision!", color="#EF4444", fontcolor="#EF4444"];
+}
